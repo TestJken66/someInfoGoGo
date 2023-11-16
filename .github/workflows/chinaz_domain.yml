@@ -29,12 +29,22 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GTOKEN }}"
           GITHUB_TOKEN1: "${{ secrets.GTOKEN }}"
 
-      - name: Build with Maven
+      - name: DownLoadProjects
         shell: bash
         continue-on-error: true
         run: |
           git clone https://oauth2:${{ secrets.GTOKEN }}@github.com/parserpp/MostInfoParse.git ../MostInfoParse
-          echo  "克隆成功......"
+          echo  "down.....parserpp/MostInfoParse....over....."
+          git clone https://oauth2:${{ secrets.GTOKEN }}@github.com/parserpp/data.git ../data
+          echo  "down.....parserpp/data....over....."
+          cd ..
+          echo "==================down  完毕 查看下目录================="
+          ls
+
+      - name: Build with Maven
+        shell: bash
+        continue-on-error: true
+        run: |
           cd ../MostInfoParse
           ls
           chmod -R 777 *
@@ -52,12 +62,11 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
-          git clone https://oauth2:${{ secrets.GTOKEN }}@github.com/parserpp/data.git ../data
           cd ../MostInfoParse
           echo "===============before copy data=============="
           ls
           mkdir icp
-          cp -rf ../data/icp/
+          cp ../data/icp/all_domain.txt icp/all_domain.txt
           cp -rf ../data/icp/chinaz_domain/ icp/chinaz_domain
           echo "=============================================================="
           echo "=====================after copy data========================="
