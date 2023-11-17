@@ -81,7 +81,7 @@ jobs:
         run: |
           cd ../MostInfoParse
           #java -Dfile.encoding=UTF-8 -jar ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar
-          java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.chinaz.icp.MainDomainWorker
+          java -Xms2g  -Xmx2g  -Xmn1g  -XX:MetaspaceSize=512m  -XX:MaxMetaspaceSize=512m  -XX:MaxDirectMemorySize=1g -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.chinaz.icp.MainDomainWorker
           echo "-------------------------------------------------------------"
           echo "----------------------[运行完成]----------------------"
           echo "-------------------------------------------------------------"
