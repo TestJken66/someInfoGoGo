@@ -66,7 +66,7 @@ jobs:
           echo "===============before copy data=============="
           ls
           mkdir icp
-          wget https://github.com/hhhaiai/tools/releases/download/v2.0/app_pkg.txt  icp/app_pkg.txt
+          wget https://github.com/hhhaiai/tools/releases/download/v2.0/app_pkg.txt  -O icp/app_pkg.txt
           cp -rf ../data/icp/pkg-cmp/ icp/pkg-cmp
           echo "=============================================================="
           echo "=====================after copy data========================="
