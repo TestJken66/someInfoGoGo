@@ -1,4 +1,4 @@
-name: icp_company
+name: yyb_company
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   #   - cron: "* */10 * * *"
   repository_dispatch:
     types:
-      - icp_company
+      - yyb_company
   workflow_dispatch:
 
 
@@ -66,8 +66,8 @@ jobs:
           echo "===============before copy data=============="
           ls
           mkdir icp
-          cp ../data/icp/all_company.txt icp/all_company.txt
-          cp -rf ../data/icp/gxb_company/ icp/gxb_company
+          wget https://github.com/hhhaiai/tools/releases/download/v2.0/app_pkg.txt  icp/app_pkg.txt
+          cp -rf ../data/icp/pkg-cmp/ icp/pkg-cmp
           echo "=============================================================="
           echo "=====================after copy data========================="
           echo "=============================================================="
@@ -81,14 +81,13 @@ jobs:
         run: |
           cd ../MostInfoParse
           #java -Dfile.encoding=UTF-8 -jar ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar
-          java -Xms2g  -Xmx2g  -Xmn1g  -XX:MetaspaceSize=1g  -XX:MaxMetaspaceSize=1g  -XX:MaxDirectMemorySize=1g -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.github.icps.IcpCompanyMain
+          java -Xms2g  -Xmx2g  -Xmn1g  -XX:MetaspaceSize=1g  -XX:MaxMetaspaceSize=1g  -XX:MaxDirectMemorySize=1g -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.YYBCompanyWorker
           echo "-------------------------------------------------------------"
           echo "----------------------[运行完成]----------------------"
           echo "-------------------------------------------------------------"
           d=$(date "+%Y-%m-%d %H:%M:%S")
-          echo "---------$d--------">>icp/gxb_company/info.txt
-          echo "[公司] ❌:$(wc -l icp/gxb_company/company_failed*.txt | awk 'END {print $1}') ✅:$(wc -l icp/gxb_company/company_pos*.txt| awk 'END {print $1}' ) 🆗:$(wc -l icp/gxb_company/company_res*.txt | awk 'END {print $1}')">>icp/gxb_company/info.txt
-          echo "[域名]❌:$(wc -l icp/gxb_company/domain_failed*.txt| awk 'END {print $1}') ✅:$(wc -l icp/gxb_company/domain_pos*.txt| awk 'END {print $1}') 🆗:$(wc -l icp/gxb_company/domain_res*.txt| awk 'END {print $1}')">>icp/gxb_company/info.txt
+          echo "---------$d--------">>icp/pkg-cmp/info.txt
+          echo "[YYB] ❌:$(wc -l icp/pkg-cmp/failed_pkg*.txt | awk 'END {print $1}') ✅:$(wc -l icp/pkg-cmp/alrun_pkg*.txt| awk 'END {print $1}' ) 🆗:$(wc -l icp/pkg-cmp/result_json*.txt | awk 'END {print $1}')">>icp/pkg-cmp/info.txt
 
       - name: update_data
         shell: bash
@@ -98,9 +97,12 @@ jobs:
             git reset --hard HEAD
             git pull
             echo "=========================同步代码完毕==========================="
-            rm -rf icp/gxb_company
-            cp -rf ../MostInfoParse/icp/gxb_company/ icp/gxb_company
+            rm -rf icp/pkg-cmp
+            cp -rf ../MostInfoParse/icp/pkg-cmp/ icp/pkg-cmp
             echo "=======================拷贝结果过来============================"
+            cd icp/
+            ls
+            tree
 
       - name: commit_2_server
         shell: bash
