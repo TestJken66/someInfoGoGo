@@ -1,9 +1,9 @@
 name: yyb_company
 
 on:
-  push:
-  pull_request:
-    branches: [main gh-pages]
+  # push:
+  # pull_request:
+  #   branches: [main gh-pages]
   # schedule:
   #   #   分 时 日 月 周
   #   - cron: "* */10 * * *"
