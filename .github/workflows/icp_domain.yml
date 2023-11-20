@@ -95,6 +95,7 @@ jobs:
         run: |
             cd ../data
             git reset --hard HEAD
+            git config pull.rebase false
             git pull
             echo "=========================同步代码完毕==========================="
             rm -rf icp/gxb_domain
