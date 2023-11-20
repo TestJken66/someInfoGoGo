@@ -81,8 +81,8 @@ jobs:
         run: |
           cd ../MostInfoParse
           #java -Dfile.encoding=UTF-8 -jar ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar
-          #java -Xms2g  -Xmx2g  -Xmn1g  -XX:MetaspaceSize=1g  -XX:MaxMetaspaceSize=1g  -XX:MaxDirectMemorySize=1g -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.YYBCompanyWorker
-          java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.YYBCompanyWorker
+          java -Xms4g  -Xmx4g  -Xmn2g  -XX:MetaspaceSize=2g  -XX:MaxMetaspaceSize=2g  -XX:MaxDirectMemorySize=2g -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.YYBCompanyWorker
+          #java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.YYBCompanyWorker
           echo "-------------------------------------------------------------"
           echo "----------------------[运行完成]----------------------"
           echo "-------------------------------------------------------------"
