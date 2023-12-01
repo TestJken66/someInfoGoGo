@@ -66,7 +66,7 @@ jobs:
           echo "===============before copy data=============="
           ls
           mkdir icp
-          cp ../data/icp/all_domain.txt icp/all_domain.txt
+          cp ../data/icp/all_company.txt icp/all_company.txt
           cp -rf ../data/icp/chinaz_cm/ icp/chinaz_cm
           echo "=============================================================="
           echo "=====================after copy data========================="
