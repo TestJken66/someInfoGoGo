@@ -1,0 +1,139 @@
+name: wdj
+
+on:
+  push:
+  pull_request:
+    branches: [main gh-pages]
+  # schedule:
+  #   #   分 时 日 月 周
+  #   - cron: "* */10 * * *"
+  repository_dispatch:
+    types:
+      - wdj
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, 'GitHubAction')"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+        # https://docs.github.com/cn/actions/learn-github-actions/environment-variables
+        env:
+          GITHUB_TOKEN: "${{ secrets.GTOKEN }}"
+          GITHUB_TOKEN1: "${{ secrets.GTOKEN }}"
+
+      - name: DownLoadProjects
+        shell: bash
+        continue-on-error: true
+        run: |
+          git clone https://oauth2:${{ secrets.GTOKEN }}@github.com/parserpp/MostInfoParse.git ../MostInfoParse
+          echo  "down.....parserpp/MostInfoParse....over....."
+          git clone https://oauth2:${{ secrets.GTOKEN }}@github.com/parserpp/data.git ../data
+          echo  "down.....parserpp/data....over....."
+          cd ..
+          echo "==================down  完毕 查看下目录================="
+          ls
+
+      - name: Build with Maven
+        shell: bash
+        continue-on-error: true
+        run: |
+          cd ../MostInfoParse
+          ls
+          chmod -R 777 *
+          git config core.filemode false
+          echo "准备开始编译～～～～"
+          mvn compile assembly:single  -Dmaven.test.skip=true
+          echo "-------------------------------------------------------------"
+          echo "----------------------[编译完成,即将运行]----------------------"
+          echo "-------------------------------------------------------------"
+          ls target/
+          tree
+
+
+      - name: down_data
+        shell: bash
+        continue-on-error: true
+        run: |
+          cd ../MostInfoParse
+          echo "===============before copy data=============="
+          ls
+          mkdir icp
+          wget https://github.com/hhhaiai/tools/releases/download/v2.0/app_pkg.txt  -O icp/app_pkg.txt
+          cp -rf ../data/icp/pkg-cmp/ icp/pkg-cmp
+          echo "=============================================================="
+          echo "=====================after copy data========================="
+          echo "=============================================================="
+          cd icp
+          tree
+
+
+      - name: Runs_java
+        shell: bash
+        continue-on-error: true
+        run: |
+          cd ../MostInfoParse
+          #java -Dfile.encoding=UTF-8 -jar ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar
+          #java -Xms2g  -Xmx2g  -Xmn1g  -XX:MetaspaceSize=1g  -XX:MaxMetaspaceSize=1g  -XX:MaxDirectMemorySize=1g -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.MainCompanyWorker 
+          java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.MainCompanyWorker 应用宝
+          #java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.MainCompanyWorker 小米
+          #java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.MainCompanyWorker 豌豆荚
+          java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.MainCompanyWorker 豌豆荚
+          #java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.MainCompanyWorker 酷安
+          #java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.companys.MainCompanyWorker 华为
+          echo "-------------------------------------------------------------"
+          echo "----------------------[运行完成]----------------------"
+          echo "-------------------------------------------------------------"
+          d=$(date "+%Y-%m-%d %H:%M:%S")
+          echo "---------$d--------">>icp/pkg-cmp/info.txt
+          echo "[YYB] ❌:$(wc -l icp/pkg-cmp/failed_pkg*.txt | awk 'END {print $1}') ✅:$(wc -l icp/pkg-cmp/alrun_pkg*.txt| awk 'END {print $1}' ) 🆗:$(wc -l icp/pkg-cmp/result_json*.txt | awk 'END {print $1}')">>icp/pkg-cmp/info.txt
+          #echo "[MI] ❌:$(wc -l icp/pkg-cmp/failed_pkg*.txt | awk 'END {print $1}') ✅:$(wc -l icp/pkg-cmp/alrun_pkg*.txt| awk 'END {print $1}' ) 🆗:$(wc -l icp/pkg-cmp/result_json*.txt | awk 'END {print $1}')">>icp/pkg-cmp/info.txt
+          #echo "[WDJ] ❌:$(wc -l icp/pkg-cmp/failed_pkg*.txt | awk 'END {print $1}') ✅:$(wc -l icp/pkg-cmp/alrun_pkg*.txt| awk 'END {print $1}' ) 🆗:$(wc -l icp/pkg-cmp/result_json*.txt | awk 'END {print $1}')">>icp/pkg-cmp/info.txt
+          #echo "[KA] ❌:$(wc -l icp/pkg-cmp/failed_pkg*.txt | awk 'END {print $1}') ✅:$(wc -l icp/pkg-cmp/alrun_pkg*.txt| awk 'END {print $1}' ) 🆗:$(wc -l icp/pkg-cmp/result_json*.txt | awk 'END {print $1}')">>icp/pkg-cmp/info.txt
+          #echo "[HW] ❌:$(wc -l icp/pkg-cmp/failed_pkg*.txt | awk 'END {print $1}') ✅:$(wc -l icp/pkg-cmp/alrun_pkg*.txt| awk 'END {print $1}' ) 🆗:$(wc -l icp/pkg-cmp/result_json*.txt | awk 'END {print $1}')">>icp/pkg-cmp/info.txt
+
+      - name: update_data
+        shell: bash
+        continue-on-error: true
+        run: |
+            cd ../data
+            git reset --hard HEAD
+            git pull
+            echo "=========================同步代码完毕==========================="
+            rm -rf icp/pkg-cmp
+            cp -rf ../MostInfoParse/icp/pkg-cmp/ icp/pkg-cmp
+            echo "=======================拷贝结果过来============================"
+            cd icp/
+            ls
+            tree
+
+      - name: commit_2_server
+        shell: bash
+        continue-on-error: true
+        run: |
+          cd ../data
+          git config --global user.name "GithubAction"
+          git config --global user.email "sanbo.xyz@gmail.com"
+          if [ -z "$(git status --porcelain)" ]
+          then
+            echo "============================nothing to update.==============================="
+          else
+            git add .
+            git commit -am "GitHubAction: triggle by commit ${{ github.sha }}. created by ${{ github.workflow }}." -a
+            git push
+          fi
+
+      - name: ls_and_see_diff
+        shell: bash
+        continue-on-error: true
+        run: |
+          ls
+          git status
+
