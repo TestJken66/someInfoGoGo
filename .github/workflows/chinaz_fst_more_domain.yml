@@ -82,7 +82,7 @@ jobs:
           cd ../MostInfoParse
           #java -Dfile.encoding=UTF-8 -jar ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar
           #java -Xms2g  -Xmx2g  -Xmn1g  -XX:MetaspaceSize=1g  -XX:MaxMetaspaceSize=1g  -XX:MaxDirectMemorySize=1g -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.chinaz.icp.FastMoreDomainWorker
-          java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.chinaz.icp.FastMoreDomainWorker
+          java -Dfile.encoding=UTF-8 -XX:+TieredCompilation -XX:TieredStopAtLevel=1  -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.chinaz.icp.FastMoreDomainWorker
           echo "-------------------------------------------------------------"
           echo "----------------------[运行完成]----------------------"
           echo "-------------------------------------------------------------"
