@@ -80,7 +80,7 @@ jobs:
         run: |
           cd ../MostInfoParse
           #java -Xms2g  -Xmx2g  -Xmn1g  -XX:MetaspaceSize=1g  -XX:MaxMetaspaceSize=1g  -XX:MaxDirectMemorySize=1g -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.tianyancha.TIanYanchaAutoRunner
-          java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.tianyancha.TIanYanchaAutoRunner 
+          java -Dfile.encoding=UTF-8 -cp ./target/MostInfoParser-1.0-SNAPSHOT-jar-with-dependencies.jar  me.tianyancha.TIanYanchaAutoRunner  20
           echo "-------------------------------------------------------------"
           echo "----------------------[运行完成]----------------------"
           echo "-------------------------------------------------------------"
